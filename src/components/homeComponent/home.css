@@ -1,0 +1,30 @@
+.background-container-home {
+    width: 100%;
+    min-height: 100vh;
+    background-image: url('/image/home-image.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    padding-top: 50px;
+    color: white;
+}
+
+.container{
+    padding-top: 50px;
+
+}
+
+.icon-button {
+    margin: 0 10px !important;
+}
+
+
+#columns-group{
+    padding-top: 50px;
+    font-size: 30px;
+    font-weight: 500;
+    text-shadow: 5px 5px 7px rgba(0, 0, 0, 0.5);
+}
