@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import FormCreateUser from '../formCreatecomponent/FormCreateUser';
 import useValidateObject from '../../hooks/useValidateObject';
 import CreateUserControl from './CreateUserControl';
+import ToastApp from '../../toastComponent/ToastApp';
 
 const CreateUserApp = () => {
 
     const [dataForm, setDataForm] = useState({});
+    const [validate, setValidate] = useState();
+    const [toast, setToast] = useState(null);
 
     const { isValidObject } = useValidateObject();
 
@@ -22,18 +25,28 @@ const CreateUserApp = () => {
     const onResponse = useCallback((response) => {
         const { success, data } = response;
         if (success) {
-          console.log("onResponse Create", data); 
           setDataForm({});
+          setValidate(true);
+          setToast({type:"success", message:"¡Ususario creado correctamente!", duration:"3000"});
         } else {
-          console.error("Error en la respuesta:", response.error);
+          setValidate(false);
+          setToast({type:"error", message: response.error});
         }
       }, []);
     
 
   return (
     <Container>
-        <FormCreateUser onDataForm = {onDataForm} />
+        <FormCreateUser onDataForm = {onDataForm} value = {validate} />
         <CreateUserControl data={dataForm} onResponse={onResponse} />
+        {toast && (
+          <ToastApp
+            key={toast.type + toast.message}
+            type={toast.type}
+            message={toast.message}
+            duration={3000}
+          />
+      )}
     </Container>
   )
 }

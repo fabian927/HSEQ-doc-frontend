@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import styled from "styled-components";
 
-const FormCreateUser = ({onDataForm}) => {
+const FormCreateUser = ({onDataForm, value}) => {
+
   const [userData, setUserData] = useState({
     name: "",
     last_name: "",
@@ -14,6 +15,22 @@ const FormCreateUser = ({onDataForm}) => {
     birthdate: "",
     age: "",
   });
+
+  useEffect(() => {
+    if (value) {
+      setUserData({
+        name: "",
+        last_name: "",
+        doc_type: "",
+        document: "",
+        email: "",
+        phone: "",
+        address: "",
+        birthdate: "",
+        age: "",
+      });
+    }
+  }, [value]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
