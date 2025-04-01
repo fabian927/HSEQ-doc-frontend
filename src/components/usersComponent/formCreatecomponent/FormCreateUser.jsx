@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import styled from "styled-components";
 
-const FormCreateUser = ({onDataForm, value}) => {
-
+const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
+  const [nameForm, setNameForm] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
     last_name: "",
@@ -40,14 +40,23 @@ const FormCreateUser = ({onDataForm, value}) => {
     });
   };
 
+  useEffect( () => {
+    if (onDataEdit) {
+      const { person } = onDataEdit
+      setNameForm(true);
+      setUserData(person); 
+    }
+  }, [onDataEdit]);
+
   const onSubmit = () => {
-    console.log("Datos del usuario:", userData);
     onDataForm(userData);
   };
 
   return (
     <Container>
-      <HeaderFrom>Crear Usuario</HeaderFrom>
+      <HeaderFrom>
+        {nameForm ? "Editar Usuario" : "Crear Usuario"}
+      </HeaderFrom>
       <Form>
         <Row className="justify-content-center">
           <Col md={4}>
@@ -163,7 +172,9 @@ const FormCreateUser = ({onDataForm, value}) => {
           </Col>
         </Row>
         <ButtonContainer>
-          <StyledButton onClick={onSubmit}>Crear Usuario</StyledButton>
+          <StyledButton onClick={onSubmit}>
+            {nameForm ? "Editar Usuario" : "Crear Usuario"}
+          </StyledButton>
         </ButtonContainer>
       </Form>
     </Container>

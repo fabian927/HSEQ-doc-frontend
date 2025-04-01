@@ -7,32 +7,31 @@ import ToastApp from '../../toastComponent/ToastApp';
 
 const CreateUserApp = () => {
 
-    const [dataForm, setDataForm] = useState({});
-    const [validate, setValidate] = useState();
-    const [toast, setToast] = useState(null);
+  const [dataForm, setDataForm] = useState({});
+  const [validate, setValidate] = useState();
+  const [toast, setToast] = useState(null);
 
-    const { isValidObject } = useValidateObject();
+  const { isValidObject } = useValidateObject();
 
+  const onDataForm = useCallback((userData) => {
+    if (isValidObject(userData)) {
+      setDataForm((prevData) => ({ ...prevData, ...userData }));
+    }else{
+      console.log("El objeto tiene valores inválidos");
+    }        
+  }, []);
 
-    const onDataForm = useCallback((userData) => {
-      if (isValidObject(userData)) {
-        setDataForm((prevData) => ({ ...prevData, ...userData }));
-      }else{
-        console.log("El objeto tiene valores inválidos");
-      }        
-    }, []);
-
-    const onResponse = useCallback((response) => {
-        const { success, data } = response;
-        if (success) {
-          setDataForm({});
-          setValidate(true);
-          setToast({type:"success", message:"¡Ususario creado correctamente!", duration:"3000"});
-        } else {
-          setValidate(false);
-          setToast({type:"error", message: response.error});
-        }
-      }, []);
+  const onResponse = useCallback((response) => {
+    const { success, data } = response;
+    if (success) {
+      setDataForm({});
+      setValidate(true);
+      setToast({type:"success", message:"¡Ususario creado correctamente!", duration:"3000"});
+    } else {
+      setValidate(false);
+      setToast({type:"error", message: response.error});
+    }
+  }, []);
     
 
   return (

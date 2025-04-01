@@ -16,7 +16,7 @@ const SidebarApp = ({ isOpen, onToggle }) => {
   return (
     <SidebarContainer isOpen={isOpen}>
       <ToggleButton onClick={onToggle}>
-        <h2>HSEQ.doc</h2> <FaBars/>
+        <FaBars/>
       </ToggleButton>
 
       <SidebarLink to="/">

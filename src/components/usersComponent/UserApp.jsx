@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import styled from 'styled-components';
 import ListUserApp from './listUserComponent/ListUserApp';
 import CreateUserApp from './createUserComponent/CreateUserApp';
+import UpdateUserApp from './updateUserComponent/UpdateUserApp';
 import { Routes, Route } from 'react-router-dom';
 
 const UserApp = () => {
@@ -22,6 +23,7 @@ const UserApp = () => {
         <Routes>
           <Route path="/" element={<ListUserApp />} /> 
           <Route path="/create" element={<CreateUserApp />} />
+          <Route path="/update" element={<UpdateUserApp />} />
         </Routes>
       </Content>
     </Container>
