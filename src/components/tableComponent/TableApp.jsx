@@ -41,8 +41,8 @@ const TableApp = ({data, onDataAction}) => {
     onDataAction({type:"2", action:"Edit", doc: doc});   
   }
 
-  const handelDelete = (id) =>{
-    onDataAction({action:"Delete", id: id});   
+  const handelDelete = (id, doc) =>{
+    onDataAction({action:"Delete", id: id, doc: doc});   
   }
 
   return (
@@ -81,7 +81,7 @@ const TableApp = ({data, onDataAction}) => {
                     </StyledButton>
                   </td>
                   <td>
-                    <StyledButton title="Eliminar" onClick={() => handelDelete(row.id)} >
+                    <StyledButton title="Eliminar" onClick={() => handelDelete(row.id, row.document, index)} >
                       <FaTrash />
                     </StyledButton>
                   </td>

@@ -17,13 +17,14 @@ const CreateUserApp = () => {
     if (isValidObject(userData)) {
       setDataForm((prevData) => ({ ...prevData, ...userData }));
     }else{
-      console.log("El objeto tiene valores inválidos");
+      setToast({type:"info", message: "El formulario tiene valores inválidos"});
     }        
   }, []);
 
   const onResponse = useCallback((response) => {
     const { success, data } = response;
     if (success) {
+      console.log("success: ",success);
       setDataForm({});
       setValidate(true);
       setToast({type:"success", message:"¡Ususario creado correctamente!", duration:"3000"});

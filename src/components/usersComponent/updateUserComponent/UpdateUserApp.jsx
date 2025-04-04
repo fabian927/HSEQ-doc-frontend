@@ -3,41 +3,36 @@ import FormCreateUser from '../formCreatecomponent/FormCreateUser';
 import FilterUserControl from '../filterComponent/FilterUserControl';
 import UpdateUserControl from '../updateUserComponent/UpdateUserControl';
 import ToastApp from '../../toastComponent/ToastApp';
+import ModalApp from '../../modalComponent/ModalApp';
+import styled from 'styled-components';
 
-const UpdateUserApp = ({user, visible}) => {
+const UpdateUserApp = ({user, stateModalUpdate, setStateModalUpdate, onRefresh}) => {
     const [userEdit, setUserEdit] = useState(user);
     const [userDataEdit, setUserdataEdit] = useState(null);
     const [dataUpdate, setDataUpdate] = useState(null);
     const [toast, setToast] = useState(null);
-    const [visibleViews, setVisibleViews] = useState({
-        table: false,
-        form: false,
-    });
 
     useEffect(() => {
         if (user) {
             setUserEdit(user);
-            if (visible) {
-                setVisibleViews(visible);
-            }
+            console.log("desde update ", user);
         }
-    }, [user, visible]);
+    }, [user]);
 
     const onResponseEdit = useCallback((response) => {
         const { success, data } = response;
         if (success) {
             setUserdataEdit(data);
-            setVisibleViews({ table: false, form: true });
         } else {
             console.error("Error en la respuesta:", response.error);
             setUserdataEdit(null);
-            setVisibleViews({ table: true, form: false });
         }
     }, []);
 
     const onResponseUpdate = useCallback((response) => {
         if (response) {
             setDataUpdate(response);
+            setStateModalUpdate(false);
         } else {
             console.error("Error en la respuesta:", response.error);
             setDataUpdate(null);
@@ -49,8 +44,14 @@ const UpdateUserApp = ({user, visible}) => {
 
         if (message === "Persona actualizada correctamente") {
             setToast({type:"success", message:"¡Ususario actualizado correctamente!", duration:"5000"});
+
+            if (onRefresh) {
+                onRefresh();
+            }
+
         } else if(message === "No se detectaron cambios para actualizar") {
             setToast({type:"info", message: message, duration:"5000"});
+
         }else{
             setToast({type:"error", message: message, duration:"5000"});
         }
@@ -58,19 +59,40 @@ const UpdateUserApp = ({user, visible}) => {
 
   return (
     <>
-      {visibleViews.form && <FormCreateUser onDataEdit={userDataEdit} onDataForm = {onResponseUpdate} />}
-      <FilterUserControl dataFilter={userEdit} onResponse={onResponseEdit} />
-      <UpdateUserControl user ={dataUpdate} onResponse={onResponseControl} />
-      {toast && (
-          <ToastApp
-            key={toast.type + toast.message}
-            type={toast.type}
-            message={toast.message}
-            duration={3000}
-          />
-      )}
+        {user &&
+            <ModalApp
+                state = {stateModalUpdate}
+                setState = {setStateModalUpdate}
+                tittle = {"Eliminar"}
+                viewHeader = {false}
+                viewOverlay = {true}
+                modalPosition = {'center'}
+                customPadding = {'10px'} 
+                widthContainer = {'800px'}
+            >
+                <ContentUpdate>
+                    <FormCreateUser onDataEdit={userDataEdit} onDataForm = {onResponseUpdate} />
+                </ContentUpdate>
+            </ModalApp> 
+        }
+        <FilterUserControl dataFilter={userEdit} onResponse={onResponseEdit} />
+        <UpdateUserControl user ={dataUpdate} onResponse={onResponseControl} />
+        {toast && (
+            <ToastApp
+                key={toast.type + toast.message}
+                type={toast.type}
+                message={toast.message}
+                duration={3000}
+            />
+        )}
     </>
   )
 }
 
 export default UpdateUserApp
+
+const ContentUpdate = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+`;

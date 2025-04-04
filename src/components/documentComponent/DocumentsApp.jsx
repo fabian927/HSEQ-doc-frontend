@@ -35,7 +35,8 @@ background-repeat: no-repeat;
 
 const Content = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
-})(({ isOpen }) => `
+})
+(({ isOpen }) => `
   flex: 1;
   padding: 10px;
   margin-left: ${isOpen ? "250px" : "60px"};

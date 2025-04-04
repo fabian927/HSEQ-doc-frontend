@@ -32,6 +32,18 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
     }
   }, [value]);
 
+  const initialState = {
+    name: "",
+    last_name: "",
+    doc_type: "",
+    document: "",
+    email: "",
+    phone: "",
+    address: "",
+    birthdate: "",
+    age: "",
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({
@@ -40,16 +52,24 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
     });
   };
 
-  useEffect( () => {
-    if (onDataEdit) {
-      const { person } = onDataEdit
+  useEffect(() => {
+    if (onDataEdit?.person) {
       setNameForm(true);
-      setUserData(person); 
+      setUserData(onDataEdit.person);
+    } else {
+      setNameForm(false);
+      setUserData(initialState);
     }
   }, [onDataEdit]);
 
-  const onSubmit = () => {
-    onDataForm(userData);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await onDataForm(userData);
+      setUserData(initialState);
+    } catch (error) {
+      console.error("Error al enviar formulario:", error);
+    }
   };
 
   return (
@@ -186,11 +206,14 @@ export default FormCreateUser;
 const Container = styled.div`
   background-color: white;
   border-radius: 10px;
-  margin: 10px;
+  margin: 20px;
   padding: 20px;
   text-align: left;
+  display: flexbox;
+  align-items: center;
+  justify-content: center;
   max-width: 100%;
-  width: 1000px;
+  width: 800px;
 
   .label{
     font-weight: bold;
