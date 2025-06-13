@@ -1,5 +1,4 @@
 import NavBarApp from '../navBarComponent/NavBarApp';
-import SidebarApp from '../sidebarComponent/SidebarApp';
 import React, { useState } from "react";
 import styled from 'styled-components';
 import ListUserApp from './listUserComponent/ListUserApp';
@@ -16,10 +15,9 @@ const UserApp = () => {
 
   return (
     <Container>
-      <NavBarApp />
-      <SidebarApp isOpen={isOpen} onToggle={handleToggle}/>
+      <NavBarApp isOpen={isOpen} setIsOpen={setIsOpen} onToggle={handleToggle}/>
       <Content isOpen={isOpen} >
-        <h1>Usuarios</h1>
+        <Title>Usuarios</Title>
         <Routes>
           <Route path="/" element={<ListUserApp />} /> 
           <Route path="/create" element={<CreateUserApp />} />
@@ -39,7 +37,20 @@ background-image: url('/image/home-image.png');
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
-`
+`;
+
+const Title = styled.h1`
+  text-align: center;
+  color: white;
+  font-size: 3rem;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 2rem;
+  margin-top: 3rem;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+`;
 
 const Content = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",

@@ -1,9 +1,8 @@
-import NavBarApp from '../navBarComponent/NavBarApp';
-import SidebarApp from '../sideBarComponent/SideBArApp';
-import React, { useState } from "react";
-import styled from 'styled-components';
+import React, { useState } from 'react'
+import NavBarApp from '@/components/navBarComponent/NavBarApp';
+import styled from 'styled-components'
 
-const ReportsApp = () => {
+const WorkPermitionApp = () => {
   const [isOpen, setIsOpen] = useState(false);  
 
   const handleToggle = () => {
@@ -13,14 +12,14 @@ const ReportsApp = () => {
   return (
     <Container>
       <NavBarApp isOpen={isOpen} setIsOpen={setIsOpen} onToggle={handleToggle}/>
-      <Content isOpen={isOpen} >
-        <Title>Reportes</Title>
+      <Content isOpen={isOpen}>
+        <Title>Permiso de Trabajo</Title>
       </Content>
     </Container>
-  );
+  )
 }
 
-export default ReportsApp
+export default WorkPermitionApp
 
 const Container = styled.div`
   width: 100%;
@@ -29,8 +28,17 @@ const Container = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
 `;
+
+const Content = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  flex: 1;
+  padding: 20px;
+  margin-left: ${({ isOpen }) => isOpen ? "250px" : "60px"};
+  transition: margin-left 0.3s ease;
+`;
+
 const Title = styled.h1`
   text-align: center;
   color: white;
@@ -43,19 +51,3 @@ const Title = styled.h1`
     font-size: 2rem;
   }
 `;
-
-const Content = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
-})(({ isOpen }) => `
-  flex: 1;
-  padding: 10px;
-  margin-left: ${isOpen ? "250px" : "60px"};
-  transition: margin-left 0.3s ease;
-  
-  h1 {
-    text-align: center;
-    color: white;
-    font-size: 3rem;
-    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-  }
-`);

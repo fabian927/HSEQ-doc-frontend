@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react";
 import Login from "./Login"
 import LoginControl from "./LoginContol"
 import ToastApp from "../toastComponent/ToastApp";
@@ -13,30 +13,34 @@ const LoginApp = ({ onLoginSuccess }) => {
 
     const { isValidObject } = useValidateObject();
 
-    const onDataUser = (dataUser) => {
-      setToast({type:"loading", message: "Validando..."});
+    const onDataUser = useCallback ((dataUser) => {
       if (isValidObject(dataUser)) {
-          setUser(dataUser);
-          setIsSubmitting(true);
+        setToast({type:"loading", message: "Validando..."});
+        setUser(dataUser);
+        setIsSubmitting(true);
       } else {
-        console.log("El objeto tiene valores inválidos");
+        setToast({type:"error", message: "Datos inválidos"});
       }
-    }
+    }, [isValidObject]);
 
-    const onResponse = async (response) => {
-        console.log("response login", response);
-        const { success } = await response; 
-        if (success) {
-          onLoginSuccess(); 
-        }
-        setIsSubmitting(false);
-        setToast({type:"error", message: response.error});
-    };
-    
+    const onResponse = useCallback(async (response) => {
+      console.log("response login", response);
+      if (response.success) {
+        onLoginSuccess(); 
+        setToast(null);
+      } else {
+        setToast({type:"error", message: response.error || "Error en el login"});
+      }
+      setIsSubmitting(false);
+      setUser(null);
+    }, [onLoginSuccess]);    
 
     useEffect(() => {
-
-    }, [user]);
+      return () => {
+        setIsSubmitting(false);
+        setUser(null);
+      };
+    }, []);
 
   return (
     <>

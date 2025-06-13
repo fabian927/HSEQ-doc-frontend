@@ -6,6 +6,10 @@ import LoginApp from "../loginComponent/LoginApp";
 import HomeApp from "../homeComponent/HomeApp";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import WorkPermitionApp from "../documentComponent/permisosComponent/workPermitionComponent/WorkPermitionApp";
+import InspectionApp from "../documentComponent/documentosComponent/inspectionComponent/InspectionApp";
+import AtsApp from "../documentComponent/atsComponent/analisisComponent/AtsApp";
+
 const RoutesApp = () => {
 
     const navigate = useNavigate();
@@ -18,6 +22,12 @@ const RoutesApp = () => {
         <Route path="/documents" element={<DocumentsApp />} />
         <Route path="/reports" element={<ReportsApp />} />
         <Route path="/login" element={<LoginApp />} />
+        
+        <Route path="/documents/workPermition" element={<WorkPermitionApp />} />
+        <Route path="/documents/inspection" element={<InspectionApp />} />
+        <Route path="/documents/ats" element={<AtsApp />} />
+
+
     </Routes>
     
   )
