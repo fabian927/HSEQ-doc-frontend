@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { Link, useLocation } from "react-router-dom";
-import { FaHome, FaUsers, FaFileAlt, FaChartBar, FaBars, FaChevronDown, FaChevronRight } from "react-icons/fa";
+import { FaHome, FaUsers, FaFileAlt, FaChartBar, FaBars, FaChevronDown, FaChevronRight, FaUser } from "react-icons/fa";
 
 const SidebarApp = ({ isOpen }) => {
   const location = useLocation();
@@ -19,12 +19,7 @@ const SidebarApp = ({ isOpen }) => {
   };
 
   const menuItems = [
-    {
-      path: "/",
-      icon: <FaHome />,
-      label: "Home",
-      exact: true
-    },
+    
     {
       label: "Usuarios",
       icon: <FaUsers />,
@@ -33,78 +28,116 @@ const SidebarApp = ({ isOpen }) => {
         { path: "/users/create", label: "Crear Usuario" }
       ]
     },
+     {
+      label: "Permisos",
+      icon: <FaFileAlt />,
+      subItems: [
+        { label: "Trabajo", path: "/documents/workPermition" },
+        { label: "Trabajo en Alturas", path: "/documents/workAlturas" },
+        { label: "Trabajo en Caliente", path: "/documents/permission2" },
+        { label: "Trabajo Eléctrico", path: "/documents/permission3" },
+        { label: "Espacios Confinados", path: "/documents/permission4" }
+      ]
+    },
     {
       label: "Documentos",
       icon: <FaFileAlt />,
       subItems: [
-        { path: "/documentos/permisos", label: "Permisos" },
-        { path: "/documentos/documentos", label: "Documentos" },
-        { path: "/documentos/ats", label: "ATS" }
+        { label: "Inspección de Herramienta", path: "/documents/inspection" },
+        { label: "Herramientas Eléctricas", path: "/documents/document2" },
+        { label: "Equipos de Altura", path: "/documents/document3" },
+        { label: "Llamado de Atención", path: "/documents/document4" }
+      ]
+    },
+    {
+      label: "ATS",
+      icon: <FaFileAlt />,
+      subItems: [
+        { label: "Trabajo Seguro", path: "/documents/ats" },
+        { label: "Alturas", path: "/documents/ats2" },
+        { label: "Espacios Confinados", path: "/documents/ats3" }
       ]
     },
     {
       label: "Reportes",
       icon: <FaChartBar />,
       subItems: [
-        { path: "/reportes/buscar", label: "Buscar Reportes" }
+        { path: "/reports", label: "Buscar Reportes" }
       ]
     }
   ];
 
   return (
     <SidebarContainer isOpen={isOpen}>
+      <User>
+        <FaUser />
+        {isOpen && <span>{localStorage.getItem("userName")}</span>}
+      </User>
       <SidebarNav>
-        {menuItems.map((item, index) => (
-          <React.Fragment key={index}>
-            {item.path ? (
-              <SidebarLink 
-                to={item.path} 
-                active={location.pathname === item.path ? "true" : undefined}
-              >
-                <IconWrapper>{item.icon}</IconWrapper>
-                {isOpen && (
-                  <>
-                    <LinkLabel>{item.label}</LinkLabel>
-                    {item.subItems && (
-                      <ChevronIcon>
-                        {expandedMenus[item.label.toLowerCase()] ? <FaChevronDown /> : <FaChevronRight />}
-                      </ChevronIcon>
+        {menuItems.map((item, index) => {
+          const isExpanded = expandedMenus[item.label?.toLowerCase()];
+          const hasSubItems = item.subItems && item.subItems.length > 0;
+          const menuKey = item.label?.toLowerCase();
+
+          return (
+            <React.Fragment key={index}>
+              {item.path ? (
+                <SidebarLink
+                  to={item.path}
+                  active={location.pathname === item.path ? "true" : undefined}
+                >
+                  <IconWrapper isOpen={isOpen}>{item.icon}</IconWrapper>
+                  {isOpen && <LinkLabel>{item.label}</LinkLabel>}
+                </SidebarLink>
+              ) : (
+                <>
+                  <MenuHeader onClick={() => toggleMenu(menuKey)}>
+                    <IconWrapper isOpen={isOpen}>{item.icon}</IconWrapper>
+                    {isOpen && (
+                      <>
+                        <LinkLabel>{item.label}</LinkLabel>
+                        <ChevronIcon>
+                          {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
+                        </ChevronIcon>
+                      </>
                     )}
-                  </>
-                )}
-              </SidebarLink>
-            ) : (
-              <>
-                <MenuHeader onClick={() => toggleMenu(item.label.toLowerCase())}>
-                  <IconWrapper>{item.icon}</IconWrapper>
-                  {isOpen && (
-                    <>
-                      <LinkLabel>{item.label}</LinkLabel>
-                      <ChevronIcon>
-                        {expandedMenus[item.label.toLowerCase()] ? <FaChevronDown /> : <FaChevronRight />}
-                      </ChevronIcon>
-                    </>
-                  )}
-                </MenuHeader>
-                <SubMenu isOpen={expandedMenus[item.label.toLowerCase()] && isOpen}>
-                  {item.subItems?.map((subItem, subIndex) => (
-                    <SidebarLink 
-                      key={subIndex} 
-                      to={subItem.path}
-                      active={location.pathname === subItem.path ? "true" : undefined}
-                    >
-                      {isOpen && subItem.label}
-                    </SidebarLink>
-                  ))}
-                </SubMenu>
-              </>
-            )}
-          </React.Fragment>
-        ))}
+                  </MenuHeader>
+
+                  <SubMenu isOpen={isExpanded && isOpen}>
+                    {hasSubItems &&
+                      item.subItems.map((subItem, subIndex) => (
+                        <SidebarLink
+                          key={subIndex}
+                          to={subItem.path}
+                          active={location.pathname === subItem.path ? "true" : undefined}
+                        >
+                          {isOpen && subItem.label}
+                        </SidebarLink>
+                      ))}
+                  </SubMenu>
+                </>
+              )}
+            </React.Fragment>
+          );
+        })}
       </SidebarNav>
     </SidebarContainer>
   );
 };
+
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre ícono y texto */
+  padding: 20px 30px;
+  margin-top: 40px;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+`;
+
 
 const SidebarContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
@@ -214,9 +247,11 @@ const SubMenu = styled.div.withConfig({
 })`
   display: ${({ isOpen }) => isOpen ? 'flex' : 'none'};
   flex-direction: column;
-  overflow: hidden;
+  max-height: none;
+  overflow: visible;
   transition: all 0.3s ease;
   background-color: rgba(0, 0, 0, 0.1);
+  padding-left: 1rem;
 `;
 
 const IconWrapper = styled.span.withConfig({

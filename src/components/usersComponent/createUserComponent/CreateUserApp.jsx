@@ -37,15 +37,15 @@ const CreateUserApp = () => {
 
   return (
     <Container>
-        <FormCreateUser onDataForm = {onDataForm} value = {validate} />
-        <CreateUserControl data={dataForm} onResponse={onResponse} />
-        {toast && (
-          <ToastApp
-            key={toast.type + toast.message}
-            type={toast.type}
-            message={toast.message}
-            duration={3000}
-          />
+      <FormCreateUser onDataForm = {onDataForm} value = {validate} />
+      <CreateUserControl data={dataForm} onResponse={onResponse} />
+      {toast && (
+        <ToastApp
+          key={toast.type + toast.message}
+          type={toast.type}
+          message={toast.message}
+          duration={3000}
+        />
       )}
     </Container>
   )

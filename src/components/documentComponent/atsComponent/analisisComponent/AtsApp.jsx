@@ -1,31 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import NavBarApp from '@/components/navBarComponent/NavBarApp';
-import { dataAts } from '../../../../assets/infoAts/InfoAts';
+import { dataAts, dataAts2, proElements, preguntas } from '../../../../assets/infoAts/InfoAts';
 import styled from 'styled-components'
-import { Formik, Form, Field, FieldArray } from 'formik';
+import { Formik, Form, Field  } from 'formik';
 import * as Yup from 'yup';
-import Table2App from '../../../tableComponent/Table2App';
+import Table2App from '@/components/tableComponent/Table2App';
+import Table3App from '@/components/tableComponent/Table3App';
+import SelectFormApp from '@/components/formComponents/SelectFormApp';
+import ParticipantesAts from './ParticipantesAts';
+import ResponsablesAts from './ResponsablesAts';
+import ToastApp from '@/components/toastComponent/ToastApp';
+import { useAtsSubmit } from './AtsControl';
+
 
 const AtsApp = () => {
   const [isOpen, setIsOpen] = useState(false);  
+  const [openTable, setOpenTable] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [id, setId] = useState(null);
+
+  const atsSubmit = useAtsSubmit();
 
   const handleToggle = () => {
     setIsOpen(!isOpen); 
   };
+
+  const handelButton = () => {
+    setOpenTable(!openTable);
+  };
+
+  const initialChecklist = proElements.reduce((acc, item) => {
+    acc[item.name] = false;
+    return acc;
+  }, {});
 
   const validationSchema = Yup.object().shape({
     proyecto: Yup.string().required('Campo obligatorio'),
     fecha: Yup.string().required('campo obligatorio'),
     actividad: Yup.string().required('campo obligatorio'),
     responsable: Yup.string().required('campo obligatorio'),
-    ejecutor: Yup.string().required('campo obligatorio'),
+    ejecutor: Yup.string()
+    .oneOf(['conecta', 'contratista'], 'Debe seleccionar una opción válida')
+    .required('Campo obligatorio'),
     // Agrega más validaciones según necesites
   });
-
-  const datosEjemplo = [
-  { nombre: "Laptop", cantidad: 5, precio: 1200 },
-  { nombre: "Mouse", cantidad: 10, precio: 25.50 },
-];
 
   return (
     <Container>
@@ -36,7 +54,6 @@ const AtsApp = () => {
           <HeaderForm>
             <p>Código: CN-SST-FT-005</p>
             <p>Versión: 02</p>
-            <p>Página: 01 de 02</p>
             <p>Fecha: 30/09/2024</p>
             <p>ATS N°: 1 </p>
           </HeaderForm> 
@@ -49,17 +66,62 @@ const AtsApp = () => {
                 actividad: '',
                 responsable: '',
                 ejecutor: '',
-                // Agrega más campos según necesites
+                otro: false,
+                requiereBloqueo: '',
+                detalleBloqueo: '',
+                otroElemento: '',
+                tBloqueo: [],
+                ...initialChecklist,
+                ...preguntas.reduce((acc, _, index) => {
+                  acc[`pregunta_${index}`] = "";
+                  return acc;
+                }, {}),
               }}
               validationSchema={validationSchema}
-              onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
-                  setSubmitting(false);
-                }, 400);
-              }}
+              onSubmit={async  (values, { setSubmitting }) => {
+                const elementosProteccion = Object.keys(values)
+                  .filter((key) => proElements.some((item) => item.name === key))
+                  .reduce((acc, key) => {
+                    acc[key] = values[key];
+                    return acc;
+                  }, {});
+
+                const preguntasFormateadas = Object.keys(values)
+                  .filter((key) => key.startsWith("pregunta_"))
+                  .map((key) => ({
+                    numero: parseInt(key.split("_")[1]),
+                    respuesta: values[key],
+                  }));
+
+                const datosFinales = {
+                  userId: localStorage.getItem('userId'),
+                  proyecto: values.proyecto,
+                  fecha: values.fecha,
+                  actividad: values.actividad,
+                  responsable: values.responsable,
+                  ejecutor: values.ejecutor,
+                  requiere_bloqueo: values.requiereBloqueo,
+                  detalle_bloqueo: values.detalleBloqueo,
+                  otro_elemento: values.otroElemento,
+                  tBloqueo: values.tBloqueo,
+                  elementosProteccion, 
+                  preguntas: preguntasFormateadas, 
+                };
+
+                await atsSubmit(datosFinales, (response) => {
+
+                  if (response.success) {
+                      setToast({type:"success", message:"Analisis de Trabajo Seguro guardado correctamente!", duration:"3000"});
+                      setId(response.data.ats_id);
+                  } else {
+                    setToast({type:"error", message: response.error});
+                  }
+                });
+
+                setSubmitting(false);
+              }}              
             >
-              {({ errors, touched, isSubmitting }) => (
+              {({ values, errors, touched, isSubmitting }) => (
                 <Form>
                   <FormGrid>
                     <div>
@@ -112,30 +174,141 @@ const AtsApp = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="ejecutor">Quien ejecuta</Label>
-                      <StyledField 
-                        id="ejecutor" 
-                        name="ejecutor" 
-                        as="select"
-                      >
-                        <option value="">Seleccione un ejecutor</option>
-                        <option value="juan">Conecta</option>
-                        <option value="maria">Contratista</option>
-                      </StyledField>
-                      {errors.ejecutor && touched.ejecutor && (
-                        <ErrorMessage>{errors.ejecutor}</ErrorMessage>
-                      )}
+                      <SelectFormApp
+                        name="ejecutor"
+                        label="Quien ejecuta"
+                        options={[
+                          { value: '', label: 'Seleccione una opción' },
+                          { value: 'conecta', label: 'Conecta' },
+                          { value: 'contratista', label: 'Contratista' }
+                        ]}
+                      />
+                    </div>
+
+                    <Button type="button" onClick={handelButton}>
+                      {openTable ? "Ocultar Analisis del Riesgo" : "Mostrar Analisis del Riesgo"}
+                    </Button>
+                  </FormGrid>
+
+                  {openTable && <Table2App data={dataAts}/>}
+
+                  <Table3App data = {dataAts2} />
+
+                  <FormGrid>
+                    <RadioGroup>
+                      <Label>¿Requiere Bloqueo?</Label>
+                      <RadioGroup>
+                        <Label>
+                          <Field type="radio" name="requiereBloqueo" value= "si" />
+                          Si
+                        </Label>
+
+                        <Label>
+                          <Field type="radio" name="requiereBloqueo" value="no" />
+                          No
+                        </Label>
+                      </RadioGroup>
+                    </RadioGroup>
+
+                    <div>
+                      <Label>Tipo de bloqueo</Label>
+                      <FormGrid>
+                        {['electrico', 'hidraulico', 'mecanico', 'otro', 'ninguno'].map((tipo) => (
+                          <Label key={tipo}>
+                            <Field
+                              type="checkbox"
+                              name="tBloqueo"
+                              value={tipo}
+                            />
+                            {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                          </Label>
+                        ))}
+                        {errors.tBloqueo && touched.tBloqueo && (
+                          <ErrorMessage>{errors.tBloqueo}</ErrorMessage>
+                        )}
+                      </FormGrid>
+                    </div>
+
+                    <div>
+                      <Field name="tBloqueo">
+                        {({ field }) =>
+                          field.value.includes('otro') && (
+                            <>
+                              <Label>Agregar bloqueo</Label>
+                              <StyledField
+                                type="text"
+                                name="detalleBloqueo"
+                                placeholder="¿Cuál?"
+                              />
+                            </>
+                          )
+                        }
+                      </Field>
                     </div>
                   </FormGrid>
 
-                  <Table2App data={dataAts}/>
-                  <SubmitButton type="submit" disabled={isSubmitting}>
+                  <SubTitle>ELEMENTOS DE PROTECCIÓN PERSONAL</SubTitle>
+                  
+                  <FormGrid>
+                    {proElements.map((item) => (
+                      <ChecklistItem key={item.name}>
+                        <Field type="checkbox" name={item.name} />
+                        {item.label}
+                      </ChecklistItem>
+                    ))}
+
+                    {values.otro && (
+                      <div style={{ gridColumn: '1 / -1' }}>
+                        <Label htmlFor="otroElemento">Especifique otro elemento</Label>
+                        <StyledField name="otroElemento" placeholder="¿Cuál?" />
+                      </div>
+                    )}                    
+                  </FormGrid>
+
+                  <SubTitle>Preguntas para verificar antes de iniciar la actividad</SubTitle>
+                  <TablaPreguntas>
+                    <thead>
+                      <tr>
+                        <th>Pregunta</th>
+                        <th>Si</th>
+                        <th>No</th>
+                        <th>NA</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {preguntas.map((pregunta, index) => (
+                        <tr key={index}>
+                          <td>{pregunta}</td>
+                          {["Si", "No", "NA"].map((opcion) => (
+                            <td key={opcion}>
+                              <Field
+                                type="radio"
+                                name={`pregunta_${index}`}
+                                value={opcion}
+                              />
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </TablaPreguntas>
+                  <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? 'Enviando...' : 'Enviar'}
-                  </SubmitButton>
+                  </Button>
                 </Form>
               )}
             </Formik>
-          </BodyForm>  
+            <ParticipantesAts id={id} />
+            <ResponsablesAts id={id} />
+            {toast && (
+              <ToastApp
+                key={toast.type + toast.message}
+                type={toast.type}
+                message={toast.message}
+                duration={3000}
+              />
+            )}
+          </BodyForm>
         </ContentForm>
       </Content>
     </Container>
@@ -144,26 +317,40 @@ const AtsApp = () => {
 
 export default AtsApp
 
-const InfoTable = styled.table`
+const TablaPreguntas = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
+  margin-top: 20px;
   font-family: Arial, sans-serif;
+  font-size: 14px;
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #e0e0e0;
+  }
+
+  td:first-child {
+    text-align: left;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
 `;
 
-const Th = styled.th`
-  background-color: #f2f2f2;
-  padding: 12px;
-  text-align: left;
-  border: 1px solid #ddd;
+const ChecklistItem = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
 `;
 
-const Td = styled.td`
-  padding: 10px;
-  border: 1px solid #ddd;
-`;
-
-const SubmitButton = styled.button`
+const Button = styled.button`
   background-color: #4CAF50;
   color: white;
   padding: 12px 20px;
@@ -172,10 +359,17 @@ const SubmitButton = styled.button`
   cursor: pointer;
   font-size: 16px;
   margin-top: 20px;
+  max-height: fit-content;
 
   &:hover {
     background-color: #45a049;
   }
+`;
+
+const RadioGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 `;
 
 const ErrorMessage = styled.div`
@@ -274,6 +468,16 @@ const SubTitle = styled.h1`
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
   border-radius: 5px;
+`;
+
+const SubTitle3 = styled.h3`
+  text-align: center;
+  color: black;
+  padding: 10px;
+  font-size: 0.8rem;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 `;
 
 const ContentForm = styled.div`

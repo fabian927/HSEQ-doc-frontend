@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import NavBarApp from '@/components/navBarComponent/NavBarApp';
 import styled from 'styled-components'
 import Table2App from '@/components/tableComponent/Table2App';
+import ParticipantesAts from '../../atsComponent/analisisComponent/ParticipantesAts';
+import ResponsablesAts from '../../atsComponent/analisisComponent/ResponsablesAts';
 
 const InspectionApp = () => {
   const [isOpen, setIsOpen] = useState(false);  
@@ -38,6 +40,8 @@ const InspectionApp = () => {
               ]
             }} 
           />
+          <ParticipantesAts/>
+          <ResponsablesAts/>
         </ContentForm>
       </Content>
     </Container>

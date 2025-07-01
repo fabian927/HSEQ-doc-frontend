@@ -1,8 +1,10 @@
 
 import React, {useEffect} from "react"
+import useAuthStorage from '../hooks/useAuthStorage';
 
 const LoginContol = ({credential, onResponse}) => {
 
+  const { saveAuthData } = useAuthStorage();
   const { user: email, pass: password } = credential;
 
   console.log(email, password);
@@ -21,28 +23,29 @@ const LoginContol = ({credential, onResponse}) => {
         const response = await fetch('http://127.0.0.1:8000/api/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }), 
             signal: controller.signal   
         });
 
         if (!response.ok) {
-            throw new Error('Credenciales inválidas');
+          throw new Error('Credenciales inválidas');
         }
 
-        const data = await response.json();
-        const token = data.token;
-        
-        window.localStorage.removeItem('token');
-        window.localStorage.setItem('token', token);
-
-        const storedToken = window.localStorage.getItem('token');
-        if (storedToken !== token) {
+        if (response.ok) {
+          const data = await response.json();
+          saveAuthData({
+            token: data.token,
+            userId: data.user.id,
+            userName: data.person.name,
+            lastName: data.person.last_name
+          });
+          onResponse({ success: true, data });
+        } else {
           throw new Error('Falló al almacenar el token');
         }
 
-        onResponse({ success: true, data });
       } catch (err) {
         if (err.name !== 'AbortError') {
           console.error("Error de autenticación:", err);

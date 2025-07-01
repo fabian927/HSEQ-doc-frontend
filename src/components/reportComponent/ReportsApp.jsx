@@ -1,26 +1,103 @@
 import NavBarApp from '../navBarComponent/NavBarApp';
 import SidebarApp from '../sideBarComponent/SideBArApp';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import TableReports from '../tableComponent/TableReports';
+import { useGetAts } from './GetAtsReport'; 
+import { generarPDF } from './pdfComponent/AtsPdfTemplate';
 
 const ReportsApp = () => {
   const [isOpen, setIsOpen] = useState(false);  
+  const [ats, setAts] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const { getAtsReport } = useGetAts();
 
   const handleToggle = () => {
     setIsOpen(!isOpen); 
   };
+
+  const columnas = [
+    {
+      name: 'Responsable',
+      selector: row => row.responsable,
+    },
+    {
+      name: 'Proyecto',
+      selector: row => row.proyecto,
+    },
+    {
+      name: 'Actividad',
+      selector: row => row.actividad,
+    },
+    {
+      name: 'Fecha inicio',
+      selector: row => row.fecha,
+    },
+    {
+      name: 'Ejecutor',
+      selector: row => row.ejecutor,
+    },
+  ];
+
+ useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    setLoading(true); 
+
+    getAtsReport(userId, (response) => {
+      setTimeout(() => {
+        if (response.status) {
+          setAts(response.data);
+          setError("");
+        } else {
+          setError(response.error || "No se pudieron cargar los datos");
+        }
+        setLoading(false); 
+      }, 3000); 
+    });
+  }, [getAtsReport]);
 
   return (
     <Container>
       <NavBarApp isOpen={isOpen} setIsOpen={setIsOpen} onToggle={handleToggle}/>
       <Content isOpen={isOpen} >
         <Title>Reportes</Title>
+        {loading ? (
+          <p style={{ color: "white", textAlign: "center" }}>Cargando datos...</p>
+        ) : error ? (
+          <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+        ) : (
+          <TableReports
+            title="Reportes ATS"
+            data={ats}
+            columns={columnas}
+            onRowClick={generarPDF}
+          />
+        )}
       </Content>
     </Container>
   );
 }
 
 export default ReportsApp
+
+const Button = styled.button`
+  margin: 1rem auto;
+  display: block;
+  padding: 0.8rem 1.5rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+`;
 
 const Container = styled.div`
   width: 100%;

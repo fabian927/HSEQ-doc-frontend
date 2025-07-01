@@ -55,6 +55,7 @@ const LoginApp = ({ onLoginSuccess }) => {
           key={toast.type + toast.message}
           type={toast.type}
           message={toast.message}
+          position="center"
           duration={3000}
         />
       )}

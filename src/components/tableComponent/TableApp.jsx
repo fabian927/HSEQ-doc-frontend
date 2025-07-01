@@ -3,7 +3,6 @@ import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import styled from 'styled-components';
-import { Navigate } from 'react-router-dom';
 
 const TableApp = ({data, onDataAction}) => {
   const [dataFilter, setDataFilter] = useState([]);

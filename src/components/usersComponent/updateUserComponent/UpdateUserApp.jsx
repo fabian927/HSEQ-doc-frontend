@@ -63,7 +63,7 @@ const UpdateUserApp = ({user, stateModalUpdate, setStateModalUpdate, onRefresh})
             <ModalApp
                 state = {stateModalUpdate}
                 setState = {setStateModalUpdate}
-                tittle = {"Eliminar"}
+                tittle = {""}
                 viewHeader = {false}
                 viewOverlay = {true}
                 modalPosition = {'center'}

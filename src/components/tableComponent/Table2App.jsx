@@ -52,13 +52,15 @@ const StyledTable = styled.table`
 `;
 
 const TableHeader = styled.thead`
-    background-color: #F2F2F2;
+    background-color: #ccc;
 `;
 
 const Th = styled.th`
     padding: 12px;
     text-align: left;
     border: 1px solid #ddd;
+    font-size: 14px;
+    text-align: center;
 `;
 
 const Td = styled.td`
