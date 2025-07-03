@@ -7,6 +7,13 @@ import BurguerButton from '../burguerComponent/BurguerButton';
 const NavBarApp = ({isOpen, setIsOpen, onToggle}) => {
     const [clicked, setClicked] = useState(false);
     const navigate = useNavigate();
+    const [roll, setRoll] = useState(null);
+
+    useEffect(() => {
+        const storedRoll = localStorage.getItem("roll");
+        setRoll(storedRoll);
+    }, []);
+
 
     const handleClick = () => {
         setClicked(!clicked);
@@ -34,8 +41,8 @@ const NavBarApp = ({isOpen, setIsOpen, onToggle}) => {
                 <Logo onClick={() => onToggle()}>HSEQ.DOC</Logo>
                 
                 <NavLinks className={`${clicked ? 'active' : ''}`}>
-                    <NavLink to="/" onClick={handleClick}>Home</NavLink>
-                    <NavLink to="/users" onClick={handleClick}>Usuarios</NavLink>
+                    <NavLink to="/" onClick={handleClick}>Home</NavLink>                    
+                    {roll === "1" && (<NavLink to="/users" onClick={handleClick}>Usuarios</NavLink>)}
                     <NavLink to="/documents" onClick={handleClick}>Documentos</NavLink>
                     <NavLink to="/reports" onClick={handleClick}>Reportes</NavLink>
                     <LogoutButton onClick={handleLogout}>Cerrar Sesión</LogoutButton>

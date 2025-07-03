@@ -5,7 +5,6 @@ import RollFetch from "../../../parametersDb/RollFetch";
 
 const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
   const [nameForm, setNameForm] = useState(false);
-  const [showcredentials, setShowCredentials] = useState(false);
   const [rolls, setRolls] = useState([]);
   const [userData, setUserData] = useState({
     name: "",
@@ -18,6 +17,8 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
     birthdate: "",
     age: "",
     roll_id: "",
+    user: "",
+    pass: "",
   });
 
   useEffect(() => {
@@ -33,6 +34,8 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
         birthdate: "",
         age: "",
         roll_id: "",
+        user: "",
+        pass: "",
       });
     }
   }, [value]);
@@ -48,6 +51,8 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
     birthdate: "",
     age: "",
     roll_id: "",
+    user: "",
+    pass: "",
   };
 
   const handleRolesResponse = useCallback((response) => {
@@ -103,6 +108,7 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                   placeholder="Nombres"
                   value={userData.name}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -114,6 +120,7 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                   placeholder="Apellidos"
                   value={userData.last_name}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -142,6 +149,7 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                   placeholder="Documento"
                   value={userData.document}
                   onChange={handleChange}
+                  required="7"
                 />
               </Form.Group>
             </Col>
@@ -155,6 +163,7 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                   placeholder="Correo@example.com"
                   value={userData.email}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -166,6 +175,7 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                   placeholder="Celular"
                   value={userData.phone}
                   onChange={handleChange}
+                  required="10"
                 />
               </Form.Group>
             </Col>
@@ -179,6 +189,7 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                   placeholder="Dirección"
                   value={userData.address}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -190,6 +201,7 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                   name="birthdate"
                   value={userData.birthdate}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -203,6 +215,7 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                   placeholder="Edad"
                   value={userData.age}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -223,92 +236,51 @@ const FormCreateUser = ({ onDataEdit, onDataForm, value}) => {
                 </Form.Select>
               </Form.Group>
             </Col>
+          </Row>          
+          <Row className="justify-content-center">
+            <Col md={5}>
+              <Form.Group className="mb-2">
+                <Form.Label className="label">Usuario (Confirmar correo)</Form.Label>
+                <Form.Control
+                  name="user"
+                  placeholder="correo@ejemplo.com"
+                  value={userData.user || ''}
+                  onChange={handleChange}
+                  required= "email"
+                />
+                {!userData.user && (
+                  <Form.Text className="text-danger">
+                    Este campo es obligatorio
+                  </Form.Text>
+                )}
+              </Form.Group>
+            </Col>
+            <Col md={5}>
+              <Form.Group className="mb-2">
+                <Form.Label className="label">Contraseña</Form.Label>
+                <Form.Control
+                  name="pass"
+                  type="password"
+                  placeholder="********"
+                  value={userData.pass || ''}
+                  onChange={handleChange}
+                  required
+                  minLength="8"
+                />
+                {!userData.pass && (
+                  <Form.Text className="text-danger">
+                    La contraseña es obligatoria
+                  </Form.Text>
+                )}
+                {userData.pass && userData.pass.length < 8 && (
+                  <Form.Text className="text-danger">
+                    La contraseña debe tener al menos 8 caracteres
+                  </Form.Text>
+                )}
+              </Form.Group>
+            </Col>
           </Row>
-          {!nameForm && (
-            <Row className="justify-content-center">
-              <Col md={5}>
-                <Form.Group className="mb-2">
-                  <div className="d-flex gap-3">
-                    <Form.Label className="label">¿Agregar Credenciales?</Form.Label>
-                    <Form.Check
-                      type="radio"
-                      id="credentialsTrue"
-                      label="Sí"
-                      name="addCredentials"
-                      value="true"
-                      checked={userData.addCredentials === "true"}
-                      onChange={(e) => {
-                        handleChange(e); // Actualiza userData
-                        setShowCredentials(true); // Muestra los campos
-                      }}
-                    />
-                    <Form.Check
-                      type="radio"
-                      id="credentialsFalse"
-                      label="No"
-                      name="addCredentials"
-                      value="false"
-                      checked={userData.addCredentials === "false"}
-                      onChange={(e) => {
-                        handleChange(e); // Actualiza userData
-                        setShowCredentials(false); // Oculta los campos
-                      }}
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
-            </Row>
-          )}
-
-          {showcredentials && (
-            <>
-              <Row className="justify-content-center">
-                <Col md={5}>
-                  <Form.Group className="mb-2">
-                    <Form.Label className="label">Usuario</Form.Label>
-                    <Form.Control
-                      name="user"
-                      placeholder="correo@ejemplo.com"
-                      value={userData.user || ''}
-                      onChange={handleChange}
-                      required
-                    />
-                    {!userData.user && (
-                      <Form.Text className="text-danger">
-                        Este campo es obligatorio
-                      </Form.Text>
-                    )}
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row className="justify-content-center">
-                <Col md={5}>
-                  <Form.Group className="mb-2">
-                    <Form.Label className="label">Contraseña</Form.Label>
-                    <Form.Control
-                      name="pass"
-                      type="password"
-                      placeholder="********"
-                      value={userData.pass || ''}
-                      onChange={handleChange}
-                      required
-                      minLength="8"
-                    />
-                    {!userData.pass && (
-                      <Form.Text className="text-danger">
-                        La contraseña es obligatoria
-                      </Form.Text>
-                    )}
-                    {userData.pass && userData.pass.length < 8 && (
-                      <Form.Text className="text-danger">
-                        La contraseña debe tener al menos 8 caracteres
-                      </Form.Text>
-                    )}
-                  </Form.Group>
-                </Col>
-              </Row>
-            </>
-          )}
+                    
           <ButtonContainer>
             <StyledButton onClick={onSubmit}>
               {nameForm ? "Editar Usuario" : "Crear Usuario"}

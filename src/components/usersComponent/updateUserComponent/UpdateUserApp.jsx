@@ -15,7 +15,6 @@ const UpdateUserApp = ({user, stateModalUpdate, setStateModalUpdate, onRefresh})
     useEffect(() => {
         if (user) {
             setUserEdit(user);
-            console.log("desde update ", user);
         }
     }, [user]);
 

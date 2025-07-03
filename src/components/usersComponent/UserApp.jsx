@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ListUserApp from './listUserComponent/ListUserApp';
 import CreateUserApp from './createUserComponent/CreateUserApp';
 import UpdateUserApp from './updateUserComponent/UpdateUserApp';
+import UpdatePassword from './updateUserComponent/UpdatePassword';
 import { Routes, Route } from 'react-router-dom';
 
 const UserApp = () => {
@@ -22,6 +23,7 @@ const UserApp = () => {
           <Route path="/" element={<ListUserApp />} /> 
           <Route path="/create" element={<CreateUserApp />} />
           <Route path="/update" element={<UpdateUserApp />} />
+          <Route path="/updtPass" element={<UpdateUserApp />} />
         </Routes>
       </Content>
     </Container>

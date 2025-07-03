@@ -485,7 +485,7 @@ const ContentForm = styled.div`
   border-radius: 10px;
   margin: 20px auto; /* Centrado horizontal */
   padding: 20px;
-  width: 90%; /* Porcentaje en lugar de fixed width */
+  width: 80%; /* Porcentaje en lugar de fixed width */
   max-width: 1200px; /* Máximo ancho */
   min-height: auto; /* Altura flexible */
   position: relative;

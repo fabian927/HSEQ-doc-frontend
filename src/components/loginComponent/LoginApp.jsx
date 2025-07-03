@@ -24,7 +24,7 @@ const LoginApp = ({ onLoginSuccess }) => {
     }, [isValidObject]);
 
     const onResponse = useCallback(async (response) => {
-      console.log("response login", response);
+      //console.log("response login", response);
       if (response.success) {
         onLoginSuccess(); 
         setToast(null);

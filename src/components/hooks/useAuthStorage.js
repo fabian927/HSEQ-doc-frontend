@@ -1,9 +1,10 @@
 const useAuthStorage = () => {
-  const saveAuthData = ({ token, userId, userName, lastName }) => {
+  const saveAuthData = ({ token, userId, userName, lastName, roll }) => {
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
     localStorage.setItem("userName", userName);
     localStorage.setItem("lastName", lastName);
+    localStorage.setItem("roll", roll);
   };
 
   const getAuthData = () => {
@@ -12,6 +13,7 @@ const useAuthStorage = () => {
       userId: localStorage.getItem("userId"),
       userName: localStorage.getItem("userName"),
       lastName: localStorage.getItem("lastName"),
+      roll: localStorage.getItem("roll")
     };
   };
 
@@ -20,6 +22,7 @@ const useAuthStorage = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("userName");
     localStorage.removeItem("lastName");
+    localStorage.removeItem("roll");
   };
 
   return {

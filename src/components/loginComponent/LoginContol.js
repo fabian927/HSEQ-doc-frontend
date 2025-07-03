@@ -7,7 +7,7 @@ const LoginContol = ({credential, onResponse}) => {
   const { saveAuthData } = useAuthStorage();
   const { user: email, pass: password } = credential;
 
-  console.log(email, password);
+  //console.log(email, password);
 
   useEffect(() => {
     if (!credential?.user || !credential?.pass) {
@@ -39,7 +39,8 @@ const LoginContol = ({credential, onResponse}) => {
             token: data.token,
             userId: data.user.id,
             userName: data.person.name,
-            lastName: data.person.last_name
+            lastName: data.person.last_name,
+            roll: data.user.id_roll,
           });
           onResponse({ success: true, data });
         } else {

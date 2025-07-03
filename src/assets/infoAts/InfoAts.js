@@ -120,18 +120,18 @@ export const dataAts2 = {
 export const proElements = [
   { label: "Casco", name: "casco" },
   { label: "Gafas/monogafas", name: "gafas" },
-  { label: "Protección respiratoria (humos y vapores)", name: "respiratoriaHumos" },
-  { label: "Protección respiratoria (material particulado)", name: "respiratoriaParticulado" },
-  { label: "Protección auditiva", name: "auditiva" },
+  { label: "Protección respiratoria (humos y vapores)", name: "protección respiratoria (humos y vapores)" },
+  { label: "Protección respiratoria (material particulado)", name: "protección respiratoria (material particulado)" },
+  { label: "Protección auditiva", name: "protección auditiva" },
   { label: "Peto", name: "peto" },
   { label: "Mangas", name: "mangas" },
-  { label: "Protección de bioseguridad", name: "bioseguridad" },
-  { label: "Guantes de carnaza", name: "guantesCarnaza" },
-  { label: "Guantes de vaqueta", name: "guantesVaqueta" },
-  { label: "Guantes de caucho y/o nitrilo", name: "guantesCaucho" },
-  { label: "Guantes dieléctricos", name: "guantesDielectricos" },
+  { label: "Protección de bioseguridad", name: "protección de bioseguridad" },
+  { label: "Guantes de carnaza", name: "guantes de carnaza" },
+  { label: "Guantes de vaqueta", name: "guantes de vaqueta" },
+  { label: "Guantes de caucho y/o nitrilo", name: "guantes de caucho" },
+  { label: "Guantes dieléctricos", name: "guantes dielectricos" },
   { label: "Canilleras", name: "canilleras" },
-  { label: "Botas de seguridad", name: "botas" },
+  { label: "Botas de seguridad", name: "botas de seguridad" },
   { label: "¿Otro?", name: "otro" }
 ];
 

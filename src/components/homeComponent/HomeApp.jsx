@@ -1,20 +1,27 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SliderApp from "../sliderComponent/SliderApp";
 
 const HomeApp = ({ onLogout }) => {
     const navigate = useNavigate();
+    const [roll, setRoll] = useState(null);
+    
+    useEffect(() => {
+        const storedRoll = localStorage.getItem("roll");
+        setRoll(storedRoll);
+    }, []);
 
     return (
         <>
             <Container>
                 <SliderApp/>
                 <ContentButton>
-                    <Button id="user" type="button" className="btn btn-outline-light icon-button" onClick={() => navigate('/users')}>
+                    {roll === "1" && <Button id="user" type="button" className="btn btn-outline-light icon-button" onClick={() => navigate('/users')}>
                         <img src="/image/icon-user.png" alt="icon-user" className="icon-img"/>
                         <ButtonLabel>Usuarios</ButtonLabel>
-                    </Button>
+                    </Button>}
                     <Button id="documents" type="button" className="btn btn-outline-light icon-button" onClick={() => navigate('/documents')}>
                         <img src="/image/icon-doc.png" alt="icon-doc" className="icon-img"/>
                         <ButtonLabel>Documentos</ButtonLabel>
