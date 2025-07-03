@@ -23,7 +23,7 @@ const UserApp = () => {
           <Route path="/" element={<ListUserApp />} /> 
           <Route path="/create" element={<CreateUserApp />} />
           <Route path="/update" element={<UpdateUserApp />} />
-          <Route path="/updtPass" element={<UpdateUserApp />} />
+          <Route path="/updtPass" element={<UpdatePassword />} />
         </Routes>
       </Content>
     </Container>

@@ -111,8 +111,8 @@ const AtsApp = () => {
                 await atsSubmit(datosFinales, (response) => {
 
                   if (response.success) {
-                      setToast({type:"success", message:"Analisis de Trabajo Seguro guardado correctamente!", duration:"3000"});
-                      setId(response.data.ats_id);
+                    setToast({type:"success", message:"Analisis de Trabajo Seguro guardado correctamente!", duration:"3000"});
+                    setId(response.data.ats_id);
                   } else {
                     setToast({type:"error", message: response.error});
                   }

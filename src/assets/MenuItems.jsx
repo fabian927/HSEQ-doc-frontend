@@ -7,7 +7,8 @@ export const menuItemsAdmin = [
         icon: <FaUsers />,
         subItems: [
         { path: "/users", label: "Listar Usuarios" },
-        { path: "/users/create", label: "Crear Usuario" }
+        { path: "/users/create", label: "Crear Usuario" },
+        { path: "/users/updtPass", label: "Cambiar Contraseña" },
         ]
     },
         {
