@@ -8,7 +8,7 @@ import UpdatePassword from './updateUserComponent/UpdatePassword';
 import { Routes, Route } from 'react-router-dom';
 
 const UserApp = () => {
-  const [isOpen, setIsOpen] = useState(false);  
+  const [isOpen, setIsOpen] = useState(true);  
 
   const handleToggle = () => {
     setIsOpen(!isOpen); 

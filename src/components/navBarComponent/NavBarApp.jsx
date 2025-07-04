@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import SidebarApp from '../sideBarComponent/SideBArApp';
+import SidebarApp from '../sidebarComponent/SidebarApp';
 import BurguerButton from '../burguerComponent/BurguerButton';
 
 const NavBarApp = ({isOpen, setIsOpen, onToggle}) => {

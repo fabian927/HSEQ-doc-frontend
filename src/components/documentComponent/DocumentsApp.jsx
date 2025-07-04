@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
 
 const DocumentsApp = () => {
-  const [isOpen, setIsOpen] = useState(false);  
+  const [isOpen, setIsOpen] = useState(true);  
   const navigate = useNavigate(); 
 
   const handleToggle = () => {

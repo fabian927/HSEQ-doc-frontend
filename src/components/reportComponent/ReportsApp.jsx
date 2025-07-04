@@ -1,5 +1,5 @@
 import NavBarApp from '../navBarComponent/NavBarApp';
-import SidebarApp from '../sideBarComponent/SideBArApp';
+import SidebarApp from '../sidebarComponent/SidebarApp';
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import TableReports from '../tableComponent/TableReports';
@@ -7,7 +7,7 @@ import { useGetAts } from './GetAtsReport';
 import { generarPDF } from './pdfComponent/AtsPdfTemplate';
 
 const ReportsApp = () => {
-  const [isOpen, setIsOpen] = useState(false);  
+  const [isOpen, setIsOpen] = useState(true);  
   const [ats, setAts] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
