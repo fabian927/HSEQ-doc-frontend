@@ -45,7 +45,8 @@ export const menuItemsAdmin = [
         label: "Reportes",
         icon: <FaChartBar />,
         subItems: [
-        { path: "/reports", label: "Buscar Reportes" }
+        { path: "/reports", label: "Reportes Ats" },
+        { path: "/reportsDocument", label: "Reportes Documentos" }
         ]
     }
 ];
@@ -93,7 +94,8 @@ export const menuItemsAdmin = [
         label: "Reportes",
         icon: <FaChartBar />,
         subItems: [
-            { path: "/reports", label: "Buscar Reportes" }
+            { path: "/reports", label: "Reportes ATS" },
+            { path: "/reportsDocument", label: "Reportes Documentos" }
         ]
     }
 ];

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import NavBarApp from '@/components/navBarComponent/NavBarApp';
 import { dataAts, dataAts2, proElements, preguntas } from '../../../../assets/infoAts/InfoAts';
 import styled from 'styled-components'
@@ -298,6 +298,7 @@ const AtsApp = () => {
                 </Form>
               )}
             </Formik>
+            <SubTitle>Equipo de Trabajo - Participantes</SubTitle>
             <ParticipantesAts id={id} />
             <ResponsablesAts id={id} />
             {toast && (
@@ -447,8 +448,8 @@ const Title = styled.h1`
   background-color: #4CAF50;
   text-align: center;
   color: white;
-  font-size: 2.5rem;
-  padding: 1rem;
+  font-size: 1.5rem;
+  padding: 0.8rem;
   margin-bottom: 1rem;
   margin-top: 1rem;
   border-radius: 5px;

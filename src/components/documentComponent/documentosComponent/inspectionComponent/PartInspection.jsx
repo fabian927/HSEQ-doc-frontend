@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -6,31 +6,32 @@ import CanvaApp from '@/components/canvaComponent/CanvaApp';
 import ModalApp from '@/components/modalComponent/ModalApp';
 import Table4App from '@/components/tableComponent/Table4App';
 import ToastApp from '@/components/toastComponent/ToastApp';
-import {useParticipantesSubmit} from './ParticipantesControl';
+import {usePartInspectionSubmit} from './PartIsnpectionControl';
 
-const ParticipantesAts = ({id}) => {
+const PartInspection = ({id}) => {
   const [openModal, setOpenModal] = useState(false);
   const [firmaBase64, setFirmaBase64] = useState('');
   const [participantes, setParticipantes] = useState([]);
   const [toast, setToast] = useState(null);
 
-  const submitParticipantes = useParticipantesSubmit();
+  console.log('inspeccionId desde PartInspeccion: ', id);
+
+  const submitParticipantesIns = usePartInspectionSubmit();
 
   const validationSchema = Yup.object().shape({
     namePart: Yup.string().required('Campo obligatorio'),
     cedulaPart: Yup.string().matches(/^[0-9]+$/, 'Solo números').min(5, 'Mínimo 5 dígitos').required('Campo obligatorio'),
     cargoPart: Yup.string().required('Campo obligatorio'),
     empresaPart: Yup.string().required('Campo obligatorio'),
-    participation: Yup.string().oneOf(['elaboracion', 'divulgacion'], 'Selecciona una opción').required('Campo obligatorio'),
   });
 
   const columnas = [
-    "Nombre", "Cédula", "Cargo", "Empresa", "Participación", "Firma"
+    "Nombre", "Cédula", "Cargo", "Empresa", "Firma"
   ];
 
   const handelSubmit = (data) => {
     console.log('click en el boton guardar participantes')
-    submitParticipantes(data, (res) => {
+    submitParticipantesIns(data, (res) => {
       if (res.success) {
         setToast({type:"success", message:"Participantes guardados correctamente!", duration:"3000"});
       } else {
@@ -47,7 +48,6 @@ const ParticipantesAts = ({id}) => {
           cedulaPart: '',
           cargoPart: '',
           empresaPart: '',
-          participation: '',
           firma: ''
         }}
         validationSchema={validationSchema}
@@ -55,10 +55,11 @@ const ParticipantesAts = ({id}) => {
           const nuevoParticipante = {
             ...values,
             firma: firmaBase64,
-            atsId: id,
+            inspectionId: id,
           };
-          setParticipantes(prev => [...prev, nuevoParticipante]);
-          console.log('participantes que se agrego ', participantes);
+          const updated = [...participantes, nuevoParticipante];
+          setParticipantes(updated);
+          console.log('Nuevo array de participantes:', updated);
 
           setFirmaBase64('');
           resetForm();
@@ -94,28 +95,13 @@ const ParticipantesAts = ({id}) => {
               </div>
 
               <div>
-                <Label>Participación</Label>
-                <RadioGroup>
-                  <RadioOption>
-                    <Field type="radio" name="participation" value="elaboracion" />
-                    Elaboración
-                  </RadioOption>
-                  <RadioOption>
-                    <Field type="radio" name="participation" value="divulgacion" />
-                    Divulgación
-                  </RadioOption>
-                </RadioGroup>
-                {errors.participation && touched.participation && <ErrorMessage>{errors.participation}</ErrorMessage>}
-              </div>
-
-              <div>
                 <Button type="button" onClick={() => setOpenModal(true)}>
                   Agregar Firma
                 </Button>
               </div>
             </FormGrid>
 
-            <Button type="submit">Agregar Participante</Button>
+            <Button type="submit">Agregar</Button>
 
             <ModalApp
               state={openModal}
@@ -147,7 +133,6 @@ const ParticipantesAts = ({id}) => {
             p.cedulaPart,
             p.cargoPart,
             p.empresaPart,
-            p.participation,
             <img src={p.firma} alt="firma" style={{ height: '40px' }} />
           ])}
         />
@@ -155,7 +140,7 @@ const ParticipantesAts = ({id}) => {
          onClick={() => handelSubmit({ participantes })}
           disabled={participantes.length === 0}
         >
-          Guargdar participantes
+          Guargdar Inspector
         </Button>
         </div>
       )}
@@ -171,7 +156,7 @@ const ParticipantesAts = ({id}) => {
   )
 }
 
-export default ParticipantesAts
+export default PartInspection;
 
 const FormGrid = styled.div`
   display: grid;
