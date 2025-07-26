@@ -33,13 +33,13 @@ export const generarPDF = async (rowData) => {
 
     // Tabla descripción de la actividad
     autoTable(doc, {
-    startY: doc.lastAutoTable.finalY + 10,
-    theme:'grid',
-    head: [['Planta o Proyecto', 'Fecha de inicio', 'Actividad a realizar']],
-    body: [[`${rowData.proyecto}`, `${rowData.fecha}`, `${rowData.actividad}`]],
-    styles: pdfStyles.tableStyles,
-    headStyles: pdfStyles.tableHeadStyles,
-    bodyStyles: pdfStyles.tableBodyStyles,
+        startY: doc.lastAutoTable.finalY + 10,
+        theme:'grid',
+        head: [['Planta o Proyecto', 'Fecha de inicio', 'Actividad a realizar']],
+        body: [[`${rowData.proyecto}`, `${rowData.fecha}`, `${rowData.actividad}`]],
+        styles: pdfStyles.tableStyles,
+        headStyles: pdfStyles.tableHeadStyles,
+        bodyStyles: pdfStyles.tableBodyStyles,
     });
 
     autoTable(doc, {

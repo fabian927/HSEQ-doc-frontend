@@ -17,8 +17,7 @@ const DocumentsApp = () => {
       title: "Permisos",
       icon: "/image/icon-doc.png", 
       buttons: [
-        { label: "Trabajo", path: "workPermition" },
-        { label: "Trabajo en Alturas", path: "workPermition" },
+        { label: "Trabajo en Alturas", path: "workPermitionHeights" },
         { label: "Trabajo en Caliente", path: "/permission2" },
         { label: "Trabajo Electrico", path: "/permission3" },
         { label: "Espacios Confinados", path: "/permission4" }

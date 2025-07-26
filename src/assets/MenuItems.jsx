@@ -15,8 +15,7 @@ export const menuItemsAdmin = [
         label: "Permisos",
         icon: <FaFileAlt />,
         subItems: [
-        { label: "Trabajo", path: "/documents/workPermition" },
-        { label: "Trabajo en Alturas", path: "/documents/workAlturas" },
+        { label: "Trabajo en Alturas", path: "/documents/workPermitionHeights" },
         { label: "Trabajo en Caliente", path: "/documents/permission2" },
         { label: "Trabajo Eléctrico", path: "/documents/permission3" },
         { label: "Espacios Confinados", path: "/documents/permission4" }
@@ -46,7 +45,8 @@ export const menuItemsAdmin = [
         icon: <FaChartBar />,
         subItems: [
         { path: "/reports", label: "Reportes Ats" },
-        { path: "/reportsDocument", label: "Reportes Documentos" }
+        { path: "/reportsDocument", label: "Reportes Documentos" },
+        { path: "/reportsPermission", label: "Reportes Permisos" }
         ]
     }
 ];
@@ -64,8 +64,7 @@ export const menuItemsAdmin = [
         label: "Permisos",
         icon: <FaFileAlt />,
         subItems: [
-            { label: "Trabajo", path: "/documents/workPermition" },
-            { label: "Trabajo en Alturas", path: "/documents/workAlturas" },
+            { label: "Trabajo en Alturas", path: "/documents/workPermitionHeights" },
             { label: "Trabajo en Caliente", path: "/documents/permission2" },
             { label: "Trabajo Eléctrico", path: "/documents/permission3" },
             { label: "Espacios Confinados", path: "/documents/permission4" }
@@ -95,7 +94,8 @@ export const menuItemsAdmin = [
         icon: <FaChartBar />,
         subItems: [
             { path: "/reports", label: "Reportes ATS" },
-            { path: "/reportsDocument", label: "Reportes Documentos" }
+            { path: "/reportsDocument", label: "Reportes Documentos" },
+            { path: "/reportsPermission", label: "Reportes Permisos" }
         ]
     }
 ];

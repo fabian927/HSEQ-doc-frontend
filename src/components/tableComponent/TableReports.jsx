@@ -34,7 +34,7 @@ const TableReports = ({ data, columns, title = "Tabla", onRowClick }) => {
         customStyles={customStyles}
         pointerOnHover={true}
         onRowClicked={(row) => {
-          console.log('Fila clickeada:', row);
+          //console.log('Fila clickeada:', row);
           if (onRowClick) onRowClick(row);
         }}
       />

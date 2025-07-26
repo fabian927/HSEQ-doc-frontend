@@ -25,21 +25,20 @@ export const pdfStyles = {
 
   // PÁRRAFOS
   paragraph: (doc) => {
-    doc.setFont('times', 'normal');
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
     doc.setTextColor(0, 0, 0);
   },
 
   // TEXTO EN NEGRITA
   boldText: (doc) => {
-    doc.setFont('times', 'bold');
+    doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
-    doc.setTextColor(0, 0, 0);
   },
 
   // TEXTO 
   boldText: (doc) => {
-    doc.setFont('times');
+    doc.setFont('helvetica');
     doc.setFontSize(11);
     doc.setTextColor(0, 0, 0);
   },

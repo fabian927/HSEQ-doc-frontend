@@ -22,7 +22,13 @@ const InspectionApp = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    fechaInicioTrab: Yup.string().required('Campo obligatorio')
+    responsable: Yup.string().required('Campo obligatorio'),
+    proyecto: Yup.string().required('Campo obligatorio'),
+    ejecutor: Yup.string().required('Campo obligatorio'),
+    fechaInicioTrab: Yup.string().required('Campo obligatorio'),
+    departamento: Yup.string().required('Campo obligatorio'),
+    municipio: Yup.string().required('Campo obligatorio'),
+    actividad: Yup.string().required('Campo obligatorio'),
   });
 
   return (

@@ -1,5 +1,4 @@
 import NavBarApp from '../navBarComponent/NavBarApp';
-import SidebarApp from '../sidebarComponent/SidebarApp';
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import TableReports from '../tableComponent/TableReports';
